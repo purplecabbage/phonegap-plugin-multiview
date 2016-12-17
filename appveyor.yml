@@ -1,0 +1,26 @@
+# appveyor file
+# http://www.appveyor.com/docs/appveyor-yml
+
+environment:
+  matrix:
+  - nodejs_version: "6"
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - netsh advfirewall firewall add rule name="Open Port 8008" dir=in action=allow protocol=TCP localport=8008
+  - npm -g install npm
+  - set PATH=%APPDATA%\npm;%PATH%
+  - npm install -g apache/cordova-paramedic
+  - npm install -g cordova
+#   - npm install --msvs_version=2013
+
+build: off
+
+test_script:
+  - node --version
+  - npm --version
+  - msbuild /version
+  - cordova --version
+  - npm install
+  - npm test
+  - cordova-paramedic --platform android --plugin .
