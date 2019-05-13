@@ -61,10 +61,16 @@ public class PGMultiView extends CordovaPlugin {
     //when we get the result of the child activity back, create a bundle that we unpack the "message to parent" from
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        Bundle bundle = intent.getExtras();
+        Bundle bundle = null ;
+        if(intent != null){
+            bundle = intent.getExtras();
+        }
         if (requestCode == RESULT_CODE) {
             if (resultCode == RESULT_OK) {
-                String messageFromChild = bundle.getString("Message to parent");
+                String messageFromChild = "";
+                if(bundle != null){
+                    messageFromChild = bundle.getString("Message to parent");
+                }
                 callbackContext.success(messageFromChild);
             }
         }
